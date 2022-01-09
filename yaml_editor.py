@@ -26,7 +26,7 @@ def flatten(data, parent_key='', sep='|'):
 def yaml_editor():
     try:
         parser = argparse.ArgumentParser(
-            description='Enter two files.. \n1. Original file to edit.\n2. File with values to edit')
+            description='Enter two files.. \n1. Original file with missing values.\n2. File with values')
         parser.add_argument('--f1', dest='f1', help='Path to the input directory.')
         parser.add_argument('--f2', dest='f2', help='Path to the output that contains the resumes.')
         file_one, file_two = parser.parse_args().f1, parser.parse_args().f2
