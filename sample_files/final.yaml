@@ -1,0 +1,36 @@
+search-engine:
+  enabled: true
+  persistence:
+    backup:
+      persistentVolumeClaim:
+        size: 50Gi
+        storageClassName: null
+    data:
+      persistentVolumeClaim:
+        size: 50Gi
+        storageClassName: network-block
+    master:
+      persistentVolumeClaim:
+        storageClassName: null
+  resources:
+    data:
+      limits:
+        cpu: 1000m
+        memory: 8Gi
+      requests:
+        cpu: 1000m
+        memory: 8Gi
+server:
+  enabled: true
+  resources:
+    server:
+      limits:
+        cpu: '3'
+        memory: 5120Mi
+      requests:
+        cpu: '1'
+        memory: 5120Mi
+  server:
+    persistentVolume:
+      size: 25Gi
+      storageClass: network-block

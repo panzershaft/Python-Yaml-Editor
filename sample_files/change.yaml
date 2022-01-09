@@ -1,0 +1,10 @@
+server:
+    enabled: true
+    server: {persistentVolume: {storageClass: network-block}}
+
+search-engine:
+    nameOverride: elasticsearch
+    persistence: {data: {persistentVolumeClaim: {storageClassName: network-block}},
+                  backup: {persistentVolumeClaim: {storageClassName: nfs-enm1604}},
+                  master: {persistentVolumeClaim: {storageClassName: network-block}}}
+
