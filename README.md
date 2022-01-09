@@ -1,6 +1,6 @@
 ## YAML editing using python
-- This program takes two yaml files are argument
-  - file1: This is a 'yaml' file with missing values you wish to fill, missing values are in different yaml file
+- This program takes two yaml files as arguments
+  - file1: This is a 'yaml' file with missing values you wish to fill, missing values are in a different yaml file
   - file2: This is the 'yaml' file which has the missing values with the keys which you need for file1
 ## How to execute ?
 ```
