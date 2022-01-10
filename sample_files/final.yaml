@@ -1,17 +1,18 @@
 search-engine:
   enabled: true
+  nameOverride: TurboMode
   persistence:
     backup:
       persistentVolumeClaim:
         size: 50Gi
-        storageClassName: null
+        storageClassName: nfs-r2d2
     data:
       persistentVolumeClaim:
         size: 50Gi
         storageClassName: network-block
     master:
       persistentVolumeClaim:
-        storageClassName: null
+        storageClassName: network-block
   resources:
     data:
       limits:

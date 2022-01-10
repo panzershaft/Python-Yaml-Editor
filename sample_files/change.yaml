@@ -3,8 +3,7 @@ server:
     server: {persistentVolume: {storageClass: network-block}}
 
 search-engine:
-    nameOverride: elasticsearch
+    nameOverride: TurboMode
     persistence: {data: {persistentVolumeClaim: {storageClassName: network-block}},
-                  backup: {persistentVolumeClaim: {storageClassName: nfs-enm1604}},
+                  backup: {persistentVolumeClaim: {storageClassName: nfs-r2d2}},
                   master: {persistentVolumeClaim: {storageClassName: network-block}}}
-

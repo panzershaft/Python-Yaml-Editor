@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+Old code... this one is buggy not to use this one,
+"""
+
 import argparse
 import collections
 import os
@@ -12,50 +16,50 @@ except ImportError:
 import yaml
 
 
+def flatten(data, parent_key='', sep='|'):
+    items = []
+    for key, value in data.items():
+        new_key = parent_key + sep + key if parent_key else key
+        if isinstance(value, collections.abc.MutableMapping):
+            items.extend(flatten(value, new_key, sep=sep).items())
+        else:
+            items.append((new_key, value))
+    return dict(items)
+
+
 def yaml_editor():
-    
-    def flatten(data, parent_key='', sep='|'):
-        items = []
-        for key, value in data.items():
-            new_key = parent_key + sep + key if parent_key else key
-            if isinstance(value, collections.abc.MutableMapping):
-                items.extend(flatten(value, new_key, sep=sep).items())
-            else:
-                items.append((new_key, value))
-        return dict(items)
-
-    def un_flatten(dictionary):
-        items = dict()
-        for key, value in dictionary.items():
-            parts = key.split("|")
-            items_copy = items
-            for part in parts[:-1]:
-                if part not in items_copy:
-                    items_copy[part] = dict()
-                items_copy = items_copy[part]
-            items_copy[parts[-1]] = value
-        return items
-
     try:
         parser = argparse.ArgumentParser(
             description='Enter two files.. \n1. Original file with missing values.\n2. File with values')
         parser.add_argument('--f1', dest='f1', help='Path to the input directory.')
         parser.add_argument('--f2', dest='f2', help='Path to the output that contains the resumes.')
         file_one, file_two = parser.parse_args().f1, parser.parse_args().f2
-
         with open(file_one) as file:
-            values = flatten(yaml.full_load(file))
+            values = yaml.full_load(file)
 
         with open(file_two) as file:
             changes = flatten(yaml.full_load(file))
 
-        value_padding = un_flatten(dict(list(values.items()) + list(changes.items())))
+        look_out_keys_values = {key.split('|')[-1]: changes[key]
+                                for key in changes.keys() if key in flatten(values)}
 
+        def set_value(obj, key):
+            if key in obj:
+                obj[key] = look_out_keys_values[key]
+                return obj[key]
+            for k, v in obj.items():
+                if isinstance(v, dict):
+                    item = set_value(v, key)
+                    if item is not None:
+                        return item
+
+        for i in look_out_keys_values.keys():
+            set_value(values, i)
         destination_dir = os.path.abspath(file_one).split('/')
         final_destination = "/".join(destination_dir[:-1]) + "/final.yaml"
 
         with open(final_destination, 'w') as file:
-            yaml.dump(value_padding, file)
+            yaml.dump(values, file)
             print(values)
 
     except FileNotFoundError as file_error:
@@ -71,4 +75,4 @@ def yaml_editor():
 
 if __name__ == '__main__':
     yaml_editor()
-    cProfile.run('yaml_editor()', sort=SortKey.CALLS)
+    # cProfile.run('yaml_editor()', sort=SortKey.CALLS)
