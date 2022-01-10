@@ -73,4 +73,4 @@ def yaml_editor():
 
 if __name__ == '__main__':
     yaml_editor()
-    cProfile.run('yaml_editor()', sort=SortKey.CALLS)
+    # cProfile.run('yaml_editor()', sort=SortKey.CALLS)
