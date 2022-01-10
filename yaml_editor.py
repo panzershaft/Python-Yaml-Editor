@@ -12,29 +12,31 @@ except ImportError:
 import yaml
 
 
-def yaml_editor():
-    
-    def flatten(data, parent_key='', sep='|'):
-        items = []
-        for key, value in data.items():
-            new_key = parent_key + sep + key if parent_key else key
-            if isinstance(value, collections.abc.MutableMapping):
-                items.extend(flatten(value, new_key, sep=sep).items())
-            else:
-                items.append((new_key, value))
-        return dict(items)
+def flatten(data, parent_key='', sep='|'):
+    items = []
+    for key, value in data.items():
+        new_key = parent_key + sep + key if parent_key else key
+        if isinstance(value, collections.abc.MutableMapping):
+            items.extend(flatten(value, new_key, sep=sep).items())
+        else:
+            items.append((new_key, value))
+    return dict(items)
 
-    def un_flatten(dictionary):
-        items = dict()
-        for key, value in dictionary.items():
-            parts = key.split("|")
-            items_copy = items
-            for part in parts[:-1]:
-                if part not in items_copy:
-                    items_copy[part] = dict()
-                items_copy = items_copy[part]
-            items_copy[parts[-1]] = value
-        return items
+
+def un_flatten(dictionary):
+    items = dict()
+    for key, value in dictionary.items():
+        parts = key.split("|")
+        items_copy = items
+        for part in parts[:-1]:
+            if part not in items_copy:
+                items_copy[part] = dict()
+            items_copy = items_copy[part]
+        items_copy[parts[-1]] = value
+    return items
+
+
+def yaml_editor():
 
     try:
         parser = argparse.ArgumentParser(
