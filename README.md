@@ -7,3 +7,12 @@
  python3 yaml_editor.py --f1 sample_files/values.yaml --f2 sample_files/change.yaml 
 ```
 - NOTE: final yaml file will be found in the same folder of the f1 file.
+- Running Radon, radon tell you the cyclomatic complexity of you code
+``$ radon cc yaml_editor.py ``
+````
+yaml_editor.py
+    F 15:0 flatten - A
+    F 26:0 un_flatten - A
+    F 39:0 yaml_editor - A
+
+````
